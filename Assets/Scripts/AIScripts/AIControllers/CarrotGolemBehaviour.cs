@@ -11,6 +11,8 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     [SerializeField] Vector3 maxRotation = new Vector3(0f, 360f, 0f);
 
     [SerializeField] float attackRange = 3f;
+    [SerializeField] float attackCooldown = 2f;
+    [SerializeField] float attackDuration = 3f;
     [SerializeField] float jumpHeight = 5f;
     [SerializeField] float maxAcceleration = 5f;
     [SerializeField] float maxSpeed = 10f;
@@ -23,21 +25,22 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     [SerializeField] AttackMoves attackSlotThree;
     [SerializeField] AttackMoves attackSlotFour;
 
-    [SerializeField] GameObject target;
-    private BehaviourTreeHandler _behaviourTreeCreator;    
+    [SerializeField] GameObject _targetObject;
+    private BehaviourTreeHandler _behaviourTreeCreator;
+
     private CarrotGolemController _carrotGolemController = new CarrotGolemController();
     private TimeData _timeData = new TimeData();
 
     public CarrotGolemController CarrotGolemController { get => _carrotGolemController; set { _carrotGolemController = value; } }
 
     private void Awake() {
-        _behaviourTreeCreator = new BehaviourTreeHandler();
+        _behaviourTreeCreator = BehaviourTreeHandler.GetInstance;
 
     }
 
     void Start() {
         CarrotGolemInit();
-        _behaviourTreeCreator.CreateCarrotGolemTree();
+        _behaviourTreeCreator.CreateCarrotGolemTree(gameObject, _targetObject);
     }
     
     void Update() {
@@ -51,6 +54,13 @@ public class CarrotGolemBehaviour : MonoBehaviour {
 
         _carrotGolem.transform.eulerAngles = _carrotGolem.orientation;*/
 
+        if(_carrotGolemController.cooldownTimer > 0) {
+            _carrotGolemController.cooldownTimer -= Time.deltaTime;
+        }
+
+        if (_carrotGolemController.attackTimer > 0) {
+            _carrotGolemController.attackTimer -= Time.deltaTime;
+        }
     }
 
     private void FixedUpdate() {        
@@ -62,8 +72,8 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         ++AIManager.GetInstance.GetID;
 
         _carrotGolemController.transform = transform;
-        _carrotGolemController.targetPosition = target.transform.position;
-        _carrotGolemController.targetGameobject = target;
+        _carrotGolemController.targetPosition = _targetObject.transform.position;
+        _carrotGolemController.targetGameObject = _targetObject;
 
         _carrotGolemController.velocity = new Vector3(0f, 0f, 0f);
         _carrotGolemController.direction = new Vector3(0f, 0f, 0f);
@@ -75,6 +85,8 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.maxRotation = maxRotation;
 
         _carrotGolemController.attackRange = attackRange;
+        _carrotGolemController.attackCooldown = attackCooldown;
+        _carrotGolemController.attackDuration = attackDuration;
         _carrotGolemController.jumpHeight = jumpHeight;
         _carrotGolemController.maxAcceleration = maxAcceleration;
         _carrotGolemController.maxSpeed = maxSpeed;
@@ -85,6 +97,9 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.currentSpeed = 0f;
         _carrotGolemController.distance = 0f;
         _carrotGolemController.currentPrediction = 0f;
+        _carrotGolemController.gravity = 0f;
+        _carrotGolemController.cooldownTimer = 0f;
+        _carrotGolemController.attackTimer = 0f;
 
         AIManager.GetInstance.GetBlendSteering.AddMappedController(ref _carrotGolemController);
 

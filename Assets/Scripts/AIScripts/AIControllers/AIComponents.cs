@@ -22,7 +22,7 @@ public struct CarrotGolemController {
     public Vector3 targetPosition;
 
     public Transform transform;
-    public GameObject targetGameobject;
+    public GameObject targetGameObject;
 
     public float maxAcceleration;
     public float maxSpeed;
@@ -35,7 +35,12 @@ public struct CarrotGolemController {
     public float currentPrediction;
 
     public float attackRange;
+    public float attackCooldown;
+    public float attackDuration;
+    public float attackTimer;
+    public float cooldownTimer;
     public float jumpHeight;
+    public float gravity;
 
     public BehaviourAndWeight faceBehaviourAndWeight;
     public BehaviourAndWeight pursueBehaviourAndWeight;

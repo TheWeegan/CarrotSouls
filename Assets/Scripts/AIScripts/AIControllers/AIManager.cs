@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class AIManager  {
     private static AIManager _instance = new AIManager();
+    public static AIManager GetInstance { get => _instance; }
+
     private BlendSteering _blendSteering = new BlendSteering();
     private Dictionary<uint, List<BehaviourAndWeight>> _mappedBehaviours = new Dictionary<uint, List<BehaviourAndWeight>>();
     private uint _id = 0;
 
-    public static AIManager GetInstance {
-        get => _instance;
-    }
 
     public BlendSteering GetBlendSteering {
         get => _blendSteering;
