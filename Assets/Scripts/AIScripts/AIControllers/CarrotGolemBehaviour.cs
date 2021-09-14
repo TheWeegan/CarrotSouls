@@ -10,7 +10,7 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     [SerializeField] Vector3 maxAngularAcceleration = new Vector3(0f, 15f, 0f);
     [SerializeField] Vector3 maxRotation = new Vector3(0f, 360f, 0f);
 
-    [SerializeField] float attackRange = 3f;
+    [SerializeField] float attackRange = 20f;
     [SerializeField] float attackCooldown = 2f;
     [SerializeField] float attackDuration = 3f;
     [SerializeField] float jumpHeight = 5f;
@@ -24,6 +24,16 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     [SerializeField] AttackMoves attackSlotTwo;
     [SerializeField] AttackMoves attackSlotThree;
     [SerializeField] AttackMoves attackSlotFour;
+
+    [SerializeField] AudioClip gigaImpactSound;
+    [SerializeField] AudioClip earthquakeSound;
+    [SerializeField] AudioClip bodySlamSound;
+    [SerializeField] AudioClip woodHammerSound;
+
+    [SerializeField] ParticleSystem gigaImpactParticleSystem;
+    [SerializeField] ParticleSystem earthquakeParticleSystem;
+    [SerializeField] ParticleSystem bodySlamParticleSystem;
+    [SerializeField] ParticleSystem woodHammerParticleSystem;
 
     [SerializeField] GameObject _targetObject;
     private BehaviourTreeHandler _behaviourTreeCreator;
@@ -40,19 +50,13 @@ public class CarrotGolemBehaviour : MonoBehaviour {
 
     void Start() {
         CarrotGolemInit();
+
         _behaviourTreeCreator.CreateCarrotGolemTree(gameObject, _targetObject);
     }
     
     void Update() {
         _timeData.deltaTime = Time.deltaTime;
         _behaviourTreeCreator.carrotGolemBehaviourTree.Tick(_timeData);
-        /*SteeringOutput result = AIManager.GetInstance.GetBlendSteering.GetSteering(_carrotGolem);
-        _carrotGolem.transform.position += result.velocity * Time.deltaTime;
-
-        _carrotGolem.orientation.y += _carrotGolem.rotation.y * Time.deltaTime;
-        _carrotGolem.rotation.y += result.angular.y;
-
-        _carrotGolem.transform.eulerAngles = _carrotGolem.orientation;*/
 
         if(_carrotGolemController.cooldownTimer > 0) {
             _carrotGolemController.cooldownTimer -= Time.deltaTime;
@@ -63,13 +67,23 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate() {        
+    private void FixedUpdate() {
+    }
+
+    public void UpdateMovementBehaviour() {
+        SteeringOutput result = AIHandler.GetInstance.GetBlendSteering.GetSteering(_carrotGolemController);
+        _carrotGolemController.transform.position += result.velocity * Time.deltaTime;
+
+        _carrotGolemController.orientation.y += _carrotGolemController.rotation.y * Time.deltaTime;
+        _carrotGolemController.rotation.y += result.angular.y;
+
+        _carrotGolemController.transform.eulerAngles = _carrotGolemController.orientation;
 
     }
 
     void CarrotGolemInit() {
-        _carrotGolemController.id = AIManager.GetInstance.GetID;
-        ++AIManager.GetInstance.GetID;
+        _carrotGolemController.id = AIHandler.GetInstance.GetID;
+        ++AIHandler.GetInstance.GetID;
 
         _carrotGolemController.transform = transform;
         _carrotGolemController.targetPosition = _targetObject.transform.position;
@@ -101,22 +115,32 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.cooldownTimer = 0f;
         _carrotGolemController.attackTimer = 0f;
 
-        AIManager.GetInstance.GetBlendSteering.AddMappedController(ref _carrotGolemController);
+        AIHandler.GetInstance.GetBlendSteering.AddMappedController(ref _carrotGolemController);
 
         BehaviourAndWeight faceBehaviourAndWeight = new BehaviourAndWeight();
         faceBehaviourAndWeight._behaviourType = BehaviourType.FaceBehaviour;
         faceBehaviourAndWeight._behaviourWeight = 1f;
-        AIManager.GetInstance.GetBlendSteering.AddMappedBehaviour(ref _carrotGolemController, faceBehaviourAndWeight);
+        AIHandler.GetInstance.GetBlendSteering.AddMappedBehaviour(ref _carrotGolemController, faceBehaviourAndWeight);
         
         BehaviourAndWeight pursueBehaviourAndWeight = new BehaviourAndWeight();
         pursueBehaviourAndWeight._behaviourType = BehaviourType.PursueBehaviour;
         pursueBehaviourAndWeight._behaviourWeight = 1f;
-        AIManager.GetInstance.GetBlendSteering.AddMappedBehaviour(ref _carrotGolemController, pursueBehaviourAndWeight);
+        AIHandler.GetInstance.GetBlendSteering.AddMappedBehaviour(ref _carrotGolemController, pursueBehaviourAndWeight);
 
         _carrotGolemController.currentAttack = AttackMoves.None;
         _carrotGolemController.attackSlotOne = attackSlotOne;
         _carrotGolemController.attackSlotTwo = attackSlotTwo;
         _carrotGolemController.attackSlotThree = attackSlotThree;
         _carrotGolemController.attackSlotFour = attackSlotFour;
+
+        _carrotGolemController.gigaImpactSound = gigaImpactSound;
+        _carrotGolemController.earthquakeSound = earthquakeSound;
+        _carrotGolemController.bodySlamSound = bodySlamSound;
+        _carrotGolemController.woodHammerSound = woodHammerSound;
+
+        _carrotGolemController.gigaImpactParticleSystem = earthquakeParticleSystem;
+        _carrotGolemController.earthquakeParticleSystem = earthquakeParticleSystem;
+        _carrotGolemController.bodySlamParticleSystem = earthquakeParticleSystem;
+        _carrotGolemController.woodHammerParticleSystem = earthquakeParticleSystem;
     }
 }

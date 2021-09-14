@@ -53,17 +53,13 @@
     <UnityVersion>2020.3.16f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\SeekBehaviour.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\TimeData.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\SequenceNode.cs" />
-    <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIManager.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeHandler.cs" />
     <Compile Include="Assets\Scripts\UIScripts\CanvasHandler.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\BlendSteering.cs" />
-    <Compile Include="Assets\Scripts\ArenaManager.cs" />
+    <Compile Include="Assets\Scripts\Overlords\ArenaOverlord.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\IBehaviourTreeNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ParallelNode.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
@@ -79,6 +75,10 @@
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\InverterNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeStatus.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\AlignBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Overlords\AudioOverlord.cs" />
+    <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIHandler.cs" />
+    <Compile Include="Assets\Scripts\Overlords\ParticleOverlord.cs" />
+    <Compile Include="Assets\Scripts\Overlords\DebugLineOverlord.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

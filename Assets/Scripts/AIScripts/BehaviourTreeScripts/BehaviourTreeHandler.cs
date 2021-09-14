@@ -76,10 +76,22 @@ public class BehaviourTreeHandler
                             return BehaviourTreeStatus.Success;
                         })
                     .End()
-                    .Do("WalkTowardsPlayer", t => {
-                        WalkTowardsPlayer();
-                        return BehaviourTreeStatus.Success;
-                    })
+                    .Sequence("AttackReady")
+                        .Do("ReadyToAttackOutsideRamge", t => {
+                            if (ReadyToAttack(gameObject)) {
+                                return BehaviourTreeStatus.Success;
+
+                            } else {
+                                return BehaviourTreeStatus.Failure;
+
+                            }
+                        })
+                        .Do("WalkTowardsPlayer", t => {
+                            WalkTowardsPlayer(gameObject);
+                            return BehaviourTreeStatus.Success;
+                        })                        
+                    .End()
+
                 .End()            
             .End()
         .Build();        
@@ -220,15 +232,19 @@ public class BehaviourTreeHandler
 
             switch (newAttack) {
                 case AttackMoves.GigaImpact:
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 case AttackMoves.Earthquake:
+                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.earthquakeSound);
                     _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
                     break;
                 case AttackMoves.BodySlam:
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 case AttackMoves.WoodHamemr:
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 default:
@@ -247,8 +263,10 @@ public class BehaviourTreeHandler
         }
     }
 
-    private void WalkTowardsPlayer() {
-
+    private void WalkTowardsPlayer(GameObject gameObject) {
+        if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
+            carrotGolemBehaviour.UpdateMovementBehaviour();
+        }
 
     }
 

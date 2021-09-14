@@ -18,6 +18,7 @@ public enum AttackMoves {
 
 public class AttackHandler {
     private CarrotGolemController _carrotGolemController;
+    DebugLineOverlord debugLineOverlord = new DebugLineOverlord();
 
     public void UseDazzlingGleam() {
 
@@ -40,6 +41,7 @@ public class AttackHandler {
             carrotGolemBehaviour.CarrotGolemController = _carrotGolemController;
         }
     }
+
     public void UseEarthquake(GameObject gameObject) {
 
         if (gameObject.TryGetComponent(out CharacterController characterController)) {
@@ -53,12 +55,15 @@ public class AttackHandler {
                     }
 
                 } else if(_carrotGolemController.attackTimer <= _carrotGolemController.attackDuration * 0.05f && !characterController.isGrounded) {
+                    debugLineOverlord.DrawRectangle(gameObject, _carrotGolemController.targetPosition, 10f, 10f);
                     characterController.Move(new Vector3(0f, (_carrotGolemController.jumpHeight + (_carrotGolemController.gravity * 10)) * Time.deltaTime, 0f));
 
                 } else {
+                    ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
                     _carrotGolemController.currentAttack = AttackMoves.None;
                     _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
                     _carrotGolemController.gravity = 0;
+
                 }
                 _carrotGolemController.gravity -= Time.deltaTime;
                 carrotGolemBehaviour.CarrotGolemController = _carrotGolemController;

@@ -53,4 +53,14 @@ public struct CarrotGolemController {
     public AttackMoves attackSlotTwo;
     public AttackMoves attackSlotThree;
     public AttackMoves attackSlotFour;
+
+    public AudioClip gigaImpactSound;
+    public AudioClip earthquakeSound;
+    public AudioClip bodySlamSound;
+    public AudioClip woodHammerSound;
+
+    public ParticleSystem gigaImpactParticleSystem;
+    public ParticleSystem earthquakeParticleSystem;
+    public ParticleSystem bodySlamParticleSystem;
+    public ParticleSystem woodHammerParticleSystem;
 }

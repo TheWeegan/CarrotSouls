@@ -30,7 +30,7 @@ public class BlendSteering {
 		SteeringOutput result = new SteeringOutput();
 		SteeringOutput tempResult = result;
 
-		foreach (var mappedBehaviour in AIManager.GetInstance.GetMappedBehaviours) {
+		foreach (var mappedBehaviour in AIHandler.GetInstance.GetMappedBehaviours) {
             foreach (BehaviourAndWeight behaviour in mappedBehaviour.Value) {
 				if(mappedBehaviour.Key != carrotGolem.id) {
 					continue;
@@ -71,18 +71,18 @@ public class BlendSteering {
 
 	public void AddMappedController(ref CarrotGolemController carrotGolem) {
 
-		AIManager.GetInstance.GetMappedBehaviours.Add(carrotGolem.id, new List<BehaviourAndWeight>());
+		AIHandler.GetInstance.GetMappedBehaviours.Add(carrotGolem.id, new List<BehaviourAndWeight>());
 	}
 
 	public void AddMappedBehaviour(ref CarrotGolemController carrotGolem, BehaviourAndWeight behaviourAndWeight) {
 
-		AIManager.GetInstance.GetMappedBehaviours[carrotGolem.id].Add(behaviourAndWeight);
+		AIHandler.GetInstance.GetMappedBehaviours[carrotGolem.id].Add(behaviourAndWeight);
     }
 
 	public void RemoveMappedBehaviour(ref CarrotGolemController carrotGolem, BehaviourType behaviourType) {
-		int index = AIManager.GetInstance.GetMappedBehaviours[carrotGolem.id].FindIndex(beahviour => beahviour._behaviourType == behaviourType);		
+		int index = AIHandler.GetInstance.GetMappedBehaviours[carrotGolem.id].FindIndex(beahviour => beahviour._behaviourType == behaviourType);		
 		if(index >= 0) {
-			AIManager.GetInstance.GetMappedBehaviours[carrotGolem.id].RemoveAt(index);
+			AIHandler.GetInstance.GetMappedBehaviours[carrotGolem.id].RemoveAt(index);
         }
 	}
 }
