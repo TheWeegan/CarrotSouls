@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController carrotController;
+    private CharacterController _characterController;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private float playerSpeed = 10.0f;
@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float gravityValue = -9.81f;
 
     private void Awake() {
-        carrotController = gameObject.AddComponent<CharacterController>();
+        _characterController = gameObject.AddComponent<CharacterController>();
     }
 
     void FixedUpdate()
@@ -21,21 +21,21 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void ManageMovement() {
-        groundedPlayer = carrotController.isGrounded;
+        groundedPlayer = _characterController.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0) {
             playerVelocity.y = 0f;
         }
         if (Input.GetKey(KeyCode.W)) {
-            carrotController.Move(transform.forward * Time.deltaTime * playerSpeed);
+            _characterController.Move(transform.forward * Time.deltaTime * playerSpeed);
 
         } else if (Input.GetKey(KeyCode.S)) {
-            carrotController.Move(-transform.forward * Time.deltaTime * playerSpeed);
+            _characterController.Move(-transform.forward * Time.deltaTime * playerSpeed);
         }
         if (Input.GetKey(KeyCode.A)) {
-            carrotController.Move(-transform.right * Time.deltaTime * playerSpeed);
+            _characterController.Move(-transform.right * Time.deltaTime * playerSpeed);
 
         } else if (Input.GetKey(KeyCode.D)) {
-            carrotController.Move(transform.right * Time.deltaTime * playerSpeed);
+            _characterController.Move(transform.right * Time.deltaTime * playerSpeed);
         }
 
         if (Input.GetButtonDown("Jump") && groundedPlayer) {
@@ -43,6 +43,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
-        carrotController.Move(playerVelocity * Time.deltaTime);
+        _characterController.Move(playerVelocity * Time.deltaTime);
     }
 }

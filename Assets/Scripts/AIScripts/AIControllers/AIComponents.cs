@@ -29,6 +29,7 @@ public struct CarrotGolemController {
     public float maxPrediction;
     public float timeToTarget;
     public float targetRadius;
+    public float characterWidth;
 
     public float currentSpeed;
     public float distance;
@@ -41,6 +42,8 @@ public struct CarrotGolemController {
     public float cooldownTimer;
     public float jumpHeight;
     public float gravity;
+
+    public bool hasHitOnce;
 
     public BehaviourAndWeight faceBehaviourAndWeight;
     public BehaviourAndWeight pursueBehaviourAndWeight;

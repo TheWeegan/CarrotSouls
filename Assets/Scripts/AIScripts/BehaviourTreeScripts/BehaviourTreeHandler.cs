@@ -99,8 +99,7 @@ public class BehaviourTreeHandler
 
     private bool IsAttackInUseDecorator(GameObject gameObject) {
         if(gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            if (_carrotGolemController.currentAttack != AttackMoves.None) {
+            if (carrotGolemBehaviour.CarrotGolemController.currentAttack != AttackMoves.None) {
                 return true;
             }
         }
@@ -138,8 +137,6 @@ public class BehaviourTreeHandler
 
     private void UseAttackAction(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-
             switch (_carrotGolemController.currentAttack) {
                 case AttackMoves.GigaImpact:
                     _attackHandler.UseGigaImpact(gameObject);
@@ -183,7 +180,6 @@ public class BehaviourTreeHandler
                     if(_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotOne &&
                         _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotOne) {
                         ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotOne);
-                            Debug.Log("GigaImpact");
                         return true;
                     }
                     break;
@@ -192,7 +188,6 @@ public class BehaviourTreeHandler
                     if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotTwo &&
                         _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotTwo) {
                         ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotTwo);
-                            Debug.Log("Earthquake");
                         return true;
                     }
                     break;
@@ -201,7 +196,6 @@ public class BehaviourTreeHandler
                     if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotThree &&
                         _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotThree) {
                         ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotThree);
-                            Debug.Log("BodySlam");
                             return true;
                     }
                     break;
@@ -210,7 +204,6 @@ public class BehaviourTreeHandler
                     if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotFour &&
                         _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotFour) {
                         ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotFour);
-                            Debug.Log("WoodHammer");
                             return true;
                     }
                     break;
@@ -233,6 +226,8 @@ public class BehaviourTreeHandler
             switch (newAttack) {
                 case AttackMoves.GigaImpact:
                     //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
+                    Debug.Log("Using giga impact");
+                    _carrotGolemController.attackTimer = 5f;
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 case AttackMoves.Earthquake:
@@ -240,17 +235,19 @@ public class BehaviourTreeHandler
                     _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
                     break;
                 case AttackMoves.BodySlam:
+                    Debug.Log("Using body slam");
                     //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 case AttackMoves.WoodHamemr:
+                    Debug.Log("Using wood hammer");
                     //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 default:
                     break;
             }
-            carrotGolemBehaviour.CarrotGolemController = _carrotGolemController;
+            carrotGolemBehaviour.UpdateControllerValues(_carrotGolemController);
         }
     }
 
@@ -259,13 +256,16 @@ public class BehaviourTreeHandler
             _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
             _carrotGolemController.targetGameObject = targetObject;
             _carrotGolemController.targetPosition = targetObject.transform.position;
-            carrotGolemBehaviour.CarrotGolemController = _carrotGolemController;
+            carrotGolemBehaviour.UpdateControllerValues(_carrotGolemController);
         }
     }
 
     private void WalkTowardsPlayer(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            carrotGolemBehaviour.UpdateMovementBehaviour();
+            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
+            _carrotGolemController.targetPosition = _carrotGolemController.targetGameObject.transform.position;
+            carrotGolemBehaviour.UpdateMovementBehaviour(true, true, ref _carrotGolemController);
+            carrotGolemBehaviour.IgnoreCollisionWithTarget();
         }
 
     }

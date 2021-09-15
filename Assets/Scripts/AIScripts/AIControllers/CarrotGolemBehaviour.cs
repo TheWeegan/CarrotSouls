@@ -67,18 +67,30 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate() {
+    public void IgnoreCollisionWithTarget() {
+        if (gameObject.TryGetComponent(out CharacterController characterController) && 
+            _carrotGolemController.targetGameObject.TryGetComponent(out CharacterController playerCharacterController)) {            
+            Physics.IgnoreCollision(characterController, playerCharacterController);
+        }
     }
 
-    public void UpdateMovementBehaviour() {
+    public void UpdateMovementBehaviour(bool updateAngular, bool updateVelocity, ref CarrotGolemController carrotGolemController) {
         SteeringOutput result = AIHandler.GetInstance.GetBlendSteering.GetSteering(_carrotGolemController);
-        _carrotGolemController.transform.position += result.velocity * Time.deltaTime;
+        
+        if (updateAngular) {
+            carrotGolemController.orientation.y += _carrotGolemController.rotation.y * Time.deltaTime;
+            carrotGolemController.rotation.y += result.angular.y;
+            carrotGolemController.transform.eulerAngles = _carrotGolemController.orientation;
+        }
+        if (updateVelocity) {
+            carrotGolemController.transform.position += result.velocity * Time.deltaTime;
+        }
 
-        _carrotGolemController.orientation.y += _carrotGolemController.rotation.y * Time.deltaTime;
-        _carrotGolemController.rotation.y += result.angular.y;
+        _carrotGolemController = carrotGolemController;
+    }
 
-        _carrotGolemController.transform.eulerAngles = _carrotGolemController.orientation;
-
+    public void UpdateControllerValues(CarrotGolemController controllerValues) {
+        _carrotGolemController = controllerValues;
     }
 
     void CarrotGolemInit() {
@@ -97,6 +109,7 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.angularSlowRadius = angularSlowRadius;
         _carrotGolemController.maxAngularAcceleration = maxAngularAcceleration;
         _carrotGolemController.maxRotation = maxRotation;
+        _carrotGolemController.characterWidth = 2.0f;
 
         _carrotGolemController.attackRange = attackRange;
         _carrotGolemController.attackCooldown = attackCooldown;
@@ -114,6 +127,8 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.gravity = 0f;
         _carrotGolemController.cooldownTimer = 0f;
         _carrotGolemController.attackTimer = 0f;
+
+        _carrotGolemController.hasHitOnce = false;
 
         AIHandler.GetInstance.GetBlendSteering.AddMappedController(ref _carrotGolemController);
 
