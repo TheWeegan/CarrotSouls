@@ -65,6 +65,10 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         if (_carrotGolemController.attackTimer > 0) {
             _carrotGolemController.attackTimer -= Time.deltaTime;
         }
+
+        /*for (int i = 0; i < _carrotGolemController.lerpPositions.Count - 1; i++) {
+            Debug.DrawLine(_carrotGolemController.lerpPositions[i], _carrotGolemController.lerpPositions[i + 1]);
+        }*/
     }
 
     public void IgnoreCollisionWithTarget() {
@@ -110,6 +114,8 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.maxAngularAcceleration = maxAngularAcceleration;
         _carrotGolemController.maxRotation = maxRotation;
         _carrotGolemController.characterWidth = 2.0f;
+        _carrotGolemController.lerpPositions = new List<Vector3>();
+        _carrotGolemController.lerpLengthSegments = new List<Vector3>();
 
         _carrotGolemController.attackRange = attackRange;
         _carrotGolemController.attackCooldown = attackCooldown;

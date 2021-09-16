@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour {
     private float _cameraDistance = 5f;
     private float _cameraDistanceMin = 1f;
     private float _cameraDistanceMax = 20f;
-    private float _sensitivity = 50f;
+    private float _sensitivity = 100f;
 
     private bool _lockCursor = true;
 

@@ -225,8 +225,7 @@ public class BehaviourTreeHandler
 
             switch (newAttack) {
                 case AttackMoves.GigaImpact:
-                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
-                    Debug.Log("Using giga impact");
+                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
                     _carrotGolemController.attackTimer = 5f;
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
@@ -235,13 +234,32 @@ public class BehaviourTreeHandler
                     _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
                     break;
                 case AttackMoves.BodySlam:
-                    Debug.Log("Using body slam");
-                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
+                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
+                    float distance = (_carrotGolemController.targetPosition - _carrotGolemController.transform.position).magnitude;
+
+                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.transform.position);
+                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.transform.position + _carrotGolemController.transform.up * distance);
+                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.targetPosition + _carrotGolemController.transform.up * distance);                    
+                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.targetPosition);
+                    
+
+                    _carrotGolemController.lerpLengthSegments.Add(_carrotGolemController.lerpPositions[0]);
+                    float t = 0.1f;
+                    for (int i = 0; i < 8; ++i) {
+                        Vector3 _a = Vector3.Lerp(_carrotGolemController.lerpPositions[0], _carrotGolemController.lerpPositions[1], t);
+                        Vector3 _b = Vector3.Lerp(_carrotGolemController.lerpPositions[1], _carrotGolemController.lerpPositions[2], t);
+                        Vector3 _c = Vector3.Lerp(_carrotGolemController.lerpPositions[2], _carrotGolemController.lerpPositions[3], t);
+                        Vector3 _d = Vector3.Lerp(_a, _b, t);
+                        Vector3 _e = Vector3.Lerp(_b, _c, t);
+                        _carrotGolemController.lerpLengthSegments.Add(Vector3.Lerp(_d, _e, t));
+                        t += 0.1f;
+                    }
+                    _carrotGolemController.lerpLengthSegments.Add(_carrotGolemController.lerpPositions[3]);
+
                     break;
                 case AttackMoves.WoodHamemr:
-                    Debug.Log("Using wood hammer");
-                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
+                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 default:

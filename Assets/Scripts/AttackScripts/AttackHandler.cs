@@ -38,6 +38,7 @@ public class AttackHandler {
     public void UseSolarBeam() {
 
     }
+
     public void UseGigaImpact(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CharacterController characterController)) {
             if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
@@ -56,6 +57,7 @@ public class AttackHandler {
                     if(TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth) && !_carrotGolemController.hasHitOnce) {
                         ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
                         _carrotGolemController.hasHitOnce = true;
+                        Debug.Log("Target is hit by giga impact");
                     }
 
                 } else {
@@ -104,13 +106,39 @@ public class AttackHandler {
             }
         }
     }
+
+    float t = 0f;
     public void UseBodySlam(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
             _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
 
+            float curveLength = 0f;
+            for (int i = 0; i < _carrotGolemController.lerpLengthSegments.Count - 1; ++i) {
+                curveLength += (_carrotGolemController.lerpLengthSegments[i + 1] - _carrotGolemController.lerpLengthSegments[i]).magnitude;
+            }
+            t += curveLength * 0.025f * Time.deltaTime;
+            
+            Vector3 _a = Vector3.Lerp(_carrotGolemController.lerpPositions[0], _carrotGolemController.lerpPositions[1], t);
+            Vector3 _b = Vector3.Lerp(_carrotGolemController.lerpPositions[1], _carrotGolemController.lerpPositions[2], t);
+            Vector3 _c = Vector3.Lerp(_carrotGolemController.lerpPositions[2], _carrotGolemController.lerpPositions[3], t);
+            Vector3 _d = Vector3.Lerp(_a, _b, t);
+            Vector3 _e = Vector3.Lerp(_b, _c, t);
+            _carrotGolemController.transform.position = Vector3.Lerp(_d, _e, t);
 
-            _carrotGolemController.currentAttack = AttackMoves.None;
-            _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
+            if ((_carrotGolemController.targetPosition - _carrotGolemController.transform.position).magnitude <= 0.001f) {
+                ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
+
+                if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth)) {
+                    Debug.Log("Target is hit by body slam");
+                }
+
+                t = 0f;
+                _carrotGolemController.lerpPositions.Clear();
+                _carrotGolemController.lerpLengthSegments.Clear();
+                _carrotGolemController.currentAttack = AttackMoves.None;
+                _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
+            }
+
             carrotGolemBehaviour.UpdateControllerValues(_carrotGolemController);
             carrotGolemBehaviour.IgnoreCollisionWithTarget();
         }
@@ -139,8 +167,9 @@ public class AttackHandler {
                     _carrotGolemController.orientation = carrotGolemBehaviour.transform.eulerAngles;
                     carrotGolemBehaviour.UpdateMovementBehaviour(true, true, ref _carrotGolemController);
                     if(_carrotGolemController.attackTimer <= 0) {
-                        if(distance.magnitude <= 2f) {
-                            Debug.Log("Got hammered by wood");
+                        if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth)) {
+                            ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
+                            Debug.Log("Target is hit by body slam");
                         }
                         isAttacking = false;
                         _carrotGolemController.currentAttack = AttackMoves.None;

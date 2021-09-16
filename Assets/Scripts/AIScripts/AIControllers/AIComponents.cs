@@ -20,6 +20,9 @@ public struct CarrotGolemController {
     public Vector3 maxAngularAcceleration;
     public Vector3 maxRotation;
     public Vector3 targetPosition;
+    
+    public List<Vector3> lerpPositions;
+    public List<Vector3> lerpLengthSegments;
 
     public Transform transform;
     public GameObject targetGameObject;

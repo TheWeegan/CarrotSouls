@@ -11509,7 +11509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8db4841442219a54da529b9044fe5978, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.8
+      value: -15.48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8db4841442219a54da529b9044fe5978, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11517,7 +11517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8db4841442219a54da529b9044fe5978, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.6
+      value: 10.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8db4841442219a54da529b9044fe5978, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27874,8 +27874,8 @@ MonoBehaviour:
   attackCooldown: 2
   attackDuration: 3
   jumpHeight: 5
-  maxAcceleration: 2
-  maxSpeed: 2
+  maxAcceleration: 5
+  maxSpeed: 5
   maxPrediction: 5
   timeToTarget: 1
   targetRadius: 1

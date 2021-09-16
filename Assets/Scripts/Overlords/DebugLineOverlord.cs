@@ -6,7 +6,6 @@ using UnityEngine;
 public class DebugLineOverlord
 {
     public void DrawRectangle(GameObject gameObject, Vector3 targetPosition, float width, float length) {
-        targetPosition.y += 5f;
         Vector3 back = targetPosition -  (gameObject.transform.forward * length);
         Vector3 front = targetPosition + (gameObject.transform.forward * length);
         Vector3 left = targetPosition -  (gameObject.transform.right * width);

@@ -60,25 +60,26 @@
     <Compile Include="Assets\Scripts\UIScripts\CanvasHandler.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\BlendSteering.cs" />
     <Compile Include="Assets\Scripts\Overlords\ArenaOverlord.cs" />
+    <Compile Include="Assets\Scripts\Overlords\DebugLineOverlord.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\IBehaviourTreeNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ParallelNode.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\AIScripts\AIControllers\CarrotGolemBehaviour.cs" />
     <Compile Include="Assets\Scripts\UIScripts\ButtonType.cs" />
+    <Compile Include="Assets\Scripts\Overlords\AudioOverlord.cs" />
     <Compile Include="Assets\Scripts\AttackScripts\AttackHandler.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\SelectorNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ActionNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIComponents.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeBuilder.cs" />
+    <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIHandler.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\IParentBehaviourTreeNode.cs" />
+    <Compile Include="Assets\Scripts\Overlords\ParticleOverlord.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\InverterNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeStatus.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\AlignBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Overlords\AudioOverlord.cs" />
-    <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIHandler.cs" />
-    <Compile Include="Assets\Scripts\Overlords\ParticleOverlord.cs" />
-    <Compile Include="Assets\Scripts\Overlords\DebugLineOverlord.cs" />
+    <Compile Include="Assets\Scripts\TestShitOutScripts\TestLerp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
