@@ -84,7 +84,6 @@ public class AttackHandler {
                     }
 
                 } else if(_carrotGolemController.attackTimer <= _carrotGolemController.attackDuration * 0.05f && !characterController.isGrounded) {
-                    debugLineOverlord.DrawRectangle(gameObject, _carrotGolemController.targetPosition, 10f, 10f);
                     characterController.Move(new Vector3(0f, (_carrotGolemController.jumpHeight + (_carrotGolemController.gravity * 10)) * Time.deltaTime, 0f));
 
                 } else {
