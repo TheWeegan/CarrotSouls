@@ -57,29 +57,34 @@ public class TestLerp : MonoBehaviour
     }
 
     float _length = 0f;
-    public float speed = 0.001f;
+    float speed = 2500f;
+    float distance = 0f;
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        for (int i = 0; i < _lengthSegments.Count - 1; ++i) {
+            _length += (_lengthSegments[i + 1] - _lengthSegments[i]).magnitude; 
+        }
+
+        if(_t >= 1f && distance > 0) {
+             distance = 0f;
+        
+        } else if(_t <= 0f && distance > 0) {
+            distance = 0f;
+        }
+        distance += (speed / _length) * Time.deltaTime;
+
+
         _p0 = _gameObject0.transform.position;
         _p1 = _gameObject1.transform.position;
         _p2 = _gameObject2.transform.position;
         _p3 = _gameObject3.transform.position;
 
-        for (int i = 0; i < _lengthSegments.Count - 1; ++i) {
-            _length += (_lengthSegments[i + 1] - _lengthSegments[i]).magnitude; 
 
-        }
 
-        _t += Time.deltaTime * _length * speed;
-        
+        _t = distance / _length;
 
-        if(_t >= 0.99f) {
-            _t = 0.01f;
 
-        } else if(_t < 0.01) {
-            _t = 0.01f;
-        }
+        Vector3 oldPosition = gameObject.transform.position;
 
         _a = Vector3.Lerp(_p0, _p1, _t);
         _b = Vector3.Lerp(_p1, _p2, _t);
@@ -88,7 +93,8 @@ public class TestLerp : MonoBehaviour
         _e = Vector3.Lerp(_b, _c, _t);
         _currentPosition = Vector3.Lerp(_d, _e, _t);
         gameObject.transform.position = _currentPosition;
-
+        //distance += (_currentPosition - oldPosition).magnitude;
+        
         _length = 0f;
     }
 
@@ -110,8 +116,6 @@ public class TestLerp : MonoBehaviour
 
             }
         }
-
-
         return distance / arcLength;
     }
 
