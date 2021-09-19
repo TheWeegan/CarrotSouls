@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct AttackDurations {
+    public const float gigaImpactDuration = 3f;
+    public const float bodySlamDuration = 0.5f;
+    public const float earthquakeDuration = 1f;
+    public const float woodHammerDuration = 1f;
+}
+
 public enum AttackMoves {
     DazzlingGleam,
     Synthesis,
