@@ -23,15 +23,14 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     [SerializeField] ParticleSystem woodHammerParticleSystem;
 
     [SerializeField] GameObject _targetObject;
-    private BehaviourTreeHandler _behaviourTreeCreator;
 
+    private BehaviourTreeHandler _behaviourTreeCreator;
     private CarrotGolemController _carrotGolemController = new CarrotGolemController();
     private TimeData _timeData = new TimeData();
+    private float lerpT = 0f;
+    private float curveLength = 0f;
 
     public CarrotGolemController CarrotGolemController { get => _carrotGolemController; set { _carrotGolemController = value; } }
-
-    float lerpT = 0f;
-    float curveLength = 0f;
 
     private void Awake() {
         _behaviourTreeCreator = BehaviourTreeHandler.GetInstance;
@@ -51,7 +50,6 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         if(_carrotGolemController.cooldownTimer > 0) {
             _carrotGolemController.cooldownTimer -= Time.deltaTime;
         }
-
         if (_carrotGolemController.attackTimer > 0) {
             _carrotGolemController.attackTimer -= Time.deltaTime;
         }
@@ -86,8 +84,7 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     }
 
     void CarrotGolemInit() {
-        _carrotGolemController.id = AIHandler.GetInstance.GetID;
-        ++AIHandler.GetInstance.GetID;
+        _carrotGolemController.id = gameObject.GetInstanceID();
 
         _carrotGolemController.transform = transform;
         _carrotGolemController.targetPosition = _targetObject.transform.position;
@@ -102,6 +99,7 @@ public class CarrotGolemBehaviour : MonoBehaviour {
         _carrotGolemController.maxAngularAcceleration = new Vector3(0f, 120f, 0f);
         _carrotGolemController.maxRotation = new Vector3(0f, 180f, 0f);
         _carrotGolemController.characterWidth = 2.0f;
+        _carrotGolemController.characterHeight = 3.0f;
         _carrotGolemController.lerpPositions = new List<Vector3>();
         _carrotGolemController.lerpLengthSegments = new List<Vector3>();
 
@@ -248,26 +246,26 @@ public class CarrotGolemBehaviour : MonoBehaviour {
             case AttackMoves.GigaImpact:
                 //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
                 _carrotGolemController.currentAttackDuration = AttackDurations.gigaImpactDuration;
-                _carrotGolemController.attackTimer = 5f;
+                _carrotGolemController.attackTimer = AttackDurations.gigaImpactDuration;
                 _carrotGolemController.targetPosition = _targetObject.transform.position;
                 break;
             case AttackMoves.Earthquake:
                 //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.earthquakeSound);
                 _carrotGolemController.currentAttackDuration = AttackDurations.earthquakeDuration;
-                _carrotGolemController.attackTimer = 1f;
+                _carrotGolemController.attackTimer = AttackDurations.earthquakeDuration;
                 _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
                 break;
             case AttackMoves.BodySlam:
                 //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
                 _carrotGolemController.currentAttackDuration = AttackDurations.bodySlamDuration;
-                _carrotGolemController.attackTimer = 1f;
+                _carrotGolemController.attackTimer = AttackDurations.bodySlamDuration;
                 _carrotGolemController.targetPosition = _targetObject.transform.position;
                 GenerateLerpSegments();
                 break;
             case AttackMoves.WoodHamemr:
                 //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
                 _carrotGolemController.currentAttackDuration = AttackDurations.woodHammerDuration;
-                _carrotGolemController.attackTimer = 0.5f;
+                _carrotGolemController.attackTimer = AttackDurations.woodHammerDuration;
                 _carrotGolemController.targetPosition = _targetObject.transform.position;
                 break;
             default:
@@ -292,7 +290,6 @@ public class CarrotGolemBehaviour : MonoBehaviour {
                     _carrotGolemController.hasHitOnce = true;
                     Debug.Log("Target is hit by giga impact");
                 }
-
             } else {
                 _carrotGolemController.currentAttack = AttackMoves.None;
                 _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
@@ -303,13 +300,15 @@ public class CarrotGolemBehaviour : MonoBehaviour {
     }
 
     public void UseEarthquake() {
-        if (gameObject.TryGetComponent(out CharacterController characterController)) {            
-            if (_carrotGolemController.attackTimer > _carrotGolemController.currentAttackDuration * 0.05f) {
+        if (gameObject.TryGetComponent(out CharacterController characterController)) {
+            if (_carrotGolemController.attackTimer > _carrotGolemController.currentAttackDuration * 0.75f) {
+                UpdateMovementBehaviour(true, false);
+
+            } else if (_carrotGolemController.attackTimer > _carrotGolemController.currentAttackDuration * 0.05f) {
                 characterController.Move(new Vector3(0f, (_carrotGolemController.jumpHeight + _carrotGolemController.gravity) * Time.deltaTime, 0f));
                 if (_carrotGolemController.attackTimer <= _carrotGolemController.currentAttackDuration * 0.05f + Time.deltaTime) {
                     _carrotGolemController.gravity = 0f;
                 }
-
             } else if (_carrotGolemController.attackTimer <= _carrotGolemController.currentAttackDuration * 0.05f && !characterController.isGrounded) {
                 characterController.Move(new Vector3(0f, (_carrotGolemController.jumpHeight + (_carrotGolemController.gravity * 10)) * Time.deltaTime, 0f));
 
@@ -323,7 +322,6 @@ public class CarrotGolemBehaviour : MonoBehaviour {
                 _carrotGolemController.currentAttack = AttackMoves.None;
                 _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
                 _carrotGolemController.gravity = 0;
-
             }
             _carrotGolemController.gravity -= Time.deltaTime;
             IgnoreCollisionWithTarget();
@@ -332,24 +330,29 @@ public class CarrotGolemBehaviour : MonoBehaviour {
 
     public void UseBodySlam() {
         lerpT += curveLength * 0.025f * Time.deltaTime;
-
         _carrotGolemController.transform.position = CreateLerp(_carrotGolemController.lerpPositions[0], _carrotGolemController.lerpPositions[1],
             _carrotGolemController.lerpPositions[2], _carrotGolemController.lerpPositions[3]);
         
-        if ((_carrotGolemController.targetPosition - _carrotGolemController.transform.position).magnitude <= 0.001f) {
+        Vector3 direction = _carrotGolemController.targetPosition - _carrotGolemController.transform.position;
+        direction.y = 0f;
+        float distance = direction.magnitude;
 
-            ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
-        
-            if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth)) {
-                Debug.Log("Target is hit by body slam");
-            }
-        
-            lerpT = 0f;
-            _carrotGolemController.lerpPositions.Clear();
-            _carrotGolemController.lerpLengthSegments.Clear();
-            _carrotGolemController.currentAttack = AttackMoves.None;
-            _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
-        }
+        if (distance <= 0.001f) {
+            if (gameObject.GetComponent<CharacterController>().isGrounded) {
+                ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
+                if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth)) {
+                    Debug.Log("Target is hit by body slam");
+                }
+                lerpT = 0f;
+                _carrotGolemController.lerpPositions.Clear();
+                _carrotGolemController.lerpLengthSegments.Clear();
+                _carrotGolemController.currentAttack = AttackMoves.None;
+                _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
+                
+            } else {
+                gameObject.GetComponent<CharacterController>().Move(new Vector3(0f, -5f, 0f));
+            }        
+        }            
         IgnoreCollisionWithTarget();
     }
 
@@ -371,7 +374,7 @@ public class CarrotGolemBehaviour : MonoBehaviour {
                 _carrotGolemController.orientation = transform.eulerAngles;
                 UpdateMovementBehaviour(true, true);
                 if (_carrotGolemController.attackTimer <= 0) {
-                    if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, _carrotGolemController.characterWidth)) {
+                    if (TargetIsHit(gameObject, _carrotGolemController.targetGameObject, 5f)) {
                         ParticleOverlord.GetInstance.PlayAttackParticle(gameObject, _carrotGolemController.currentAttack);
                         Debug.Log("Target is hit by body slam");
                     }
@@ -380,13 +383,9 @@ public class CarrotGolemBehaviour : MonoBehaviour {
                     _carrotGolemController.cooldownTimer = _carrotGolemController.attackCooldown;
                 }
             }
-
         } else {
             UpdateMovementBehaviour(true, true);
-
         }
         IgnoreCollisionWithTarget();
     }
-
-
 }

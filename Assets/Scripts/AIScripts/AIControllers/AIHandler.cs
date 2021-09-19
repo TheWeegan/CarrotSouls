@@ -8,24 +8,13 @@ public class AIHandler  {
     public static AIHandler GetInstance { get => _instance; }
 
     private BlendSteering _blendSteering = new BlendSteering();
-    private Dictionary<uint, List<BehaviourAndWeight>> _mappedBehaviours = new Dictionary<uint, List<BehaviourAndWeight>>();
-    private uint _id = 0;
-
+    private Dictionary<int, List<BehaviourAndWeight>> _mappedBehaviours = new Dictionary<int, List<BehaviourAndWeight>>();
 
     public BlendSteering GetBlendSteering {
         get => _blendSteering;
     }
 
-    public Dictionary<uint, List<BehaviourAndWeight>> GetMappedBehaviours {
+    public Dictionary<int, List<BehaviourAndWeight>> GetMappedBehaviours {
         get => _mappedBehaviours;
     }
-
-    public uint GetID { 
-        get => _id;
-        set { 
-            _id = value; 
-        }
-        
-    }
-
 }

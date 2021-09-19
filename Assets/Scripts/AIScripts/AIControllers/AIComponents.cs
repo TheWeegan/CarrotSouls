@@ -9,7 +9,7 @@ public struct SteeringOutput {
 };
 
 public struct CarrotGolemController {
-    public uint id;
+    public int id;
     public Transform transform;
     public GameObject targetGameObject;
 
