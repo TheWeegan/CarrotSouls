@@ -150,7 +150,6 @@ public class BehaviourTreeHandler
                     break;
             }
         }
-
     }
 
     private bool ReadyToAttack(GameObject gameObject) {
