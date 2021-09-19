@@ -225,16 +225,16 @@ public class BehaviourTreeHandler
 
             switch (newAttack) {
                 case AttackMoves.GigaImpact:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
                     _carrotGolemController.attackTimer = 5f;
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 case AttackMoves.Earthquake:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.earthquakeSound);
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.earthquakeSound);
                     _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
                     break;
                 case AttackMoves.BodySlam:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     float distance = (_carrotGolemController.targetPosition - _carrotGolemController.transform.position).magnitude;
 
@@ -259,7 +259,7 @@ public class BehaviourTreeHandler
 
                     break;
                 case AttackMoves.WoodHamemr:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
+                    //AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
                     _carrotGolemController.targetPosition = targetObject.transform.position;
                     break;
                 default:
