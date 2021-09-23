@@ -28424,18 +28424,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7540182d172b74ba240a2b9f2e5d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angularSlowRadius: {x: 0, y: 60, z: 0}
-  maxAngularAcceleration: {x: 0, y: 30, z: 0}
-  maxRotation: {x: 0, y: 90, z: 0}
+  angularSlowRadius: {x: 0, y: 270, z: 0}
+  maxAngularAcceleration: {x: 0, y: 15, z: 0}
+  maxRotation: {x: 0, y: 360, z: 0}
   attackRange: 20
   attackCooldown: 2
   attackDuration: 3
   jumpHeight: 5
   maxAcceleration: 5
-  maxSpeed: 5
+  maxSpeed: 10
   maxPrediction: 5
   timeToTarget: 1
-  targetRadius: 1
+  targetRadius: 5
   attackSlotOne: 4
   attackSlotTwo: 5
   attackSlotThree: 6
