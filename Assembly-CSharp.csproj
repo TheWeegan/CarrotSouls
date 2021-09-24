@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\SeekBehaviour.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\TimeData.cs" />
+    <Compile Include="Assets\Scripts\TestShitOutScripts\TestLerp.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\SequenceNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeHandler.cs" />
     <Compile Include="Assets\Scripts\UIScripts\CanvasHandler.cs" />
@@ -63,13 +64,14 @@
     <Compile Include="Assets\Scripts\Overlords\DebugLineOverlord.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\IBehaviourTreeNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ParallelNode.cs" />
-    <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\TestShitOutScripts\TestMathStuff.cs" />
     <Compile Include="Assets\Scripts\AIScripts\AIControllers\CarrotGolemBehaviour.cs" />
     <Compile Include="Assets\Scripts\UIScripts\ButtonType.cs" />
     <Compile Include="Assets\Scripts\Overlords\AudioOverlord.cs" />
     <Compile Include="Assets\Scripts\AttackScripts\AttackHandler.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\SelectorNode.cs" />
+    <Compile Include="Assets\Scripts\PlayerScripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ActionNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\AIControllers\AIComponents.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeBuilder.cs" />
@@ -79,7 +81,7 @@
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\InverterNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeStatus.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\AlignBehaviour.cs" />
-    <Compile Include="Assets\Scripts\TestShitOutScripts\TestLerp.cs" />
+    <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -306,12 +308,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.16f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.16f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.16f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
