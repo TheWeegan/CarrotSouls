@@ -1,62 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class TestMathStuff : MonoBehaviour {
-    public Mesh _mesh;
-    public Canvas textCanvas;
+public class TestMathStuff : MonoBehaviour
+{
+    [SerializeField] List<GameObject> _walls;
 
-    Vector3 _cross = new Vector3();
+    [SerializeField] Vector2 velocity = new Vector2(7.5f, 6f);
+    [SerializeField] float speed = 5f;
+    [SerializeField] float _rayDistance = 20f;
+    
+    Vector2 position2D = new Vector2();
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.cyan;
-        //Gizmos.DrawMesh(_mesh);
-
+    /*private void OnDrawGizmos() {
+        Vector2 position = gameObject.transform.position;
 
         Gizmos.color = Color.green;
-        for (int i = 0; i < 1; i++) {
-            Vector3 firstVertice = _mesh.vertices[_mesh.triangles[0]];
-            Vector3 secondVertice = _mesh.vertices[_mesh.triangles[1]];
-            Vector3 thirdVertice = _mesh.vertices[_mesh.triangles[2]];
+        Gizmos.DrawLine(_origo, position);
 
-            //Gizmos.DrawLine(firstVertice, secondVertice);
-            Gizmos.DrawLine(secondVertice, thirdVertice);
-            Gizmos.DrawLine(thirdVertice, firstVertice);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(_origo, _normal.normalized);
+        //Gizmos.DrawLine(_b, _bNormal);
+
+        Vector2 dotProduct = position * _normal.normalized;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(position, dotProduct);
+
+        Vector2 reflection = new Vector2(dotProduct.y, -dotProduct.x);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(position, reflection);
+
+    }*/
 
 
-            //Gizmos.DrawLine(cross,cross.normalized);
-            //float verticecArea = cross.magnitude * 0.5f;
-            //meshesArea += verticecArea;
 
+    private void Start() {
+        
+
+    }
+
+    private void FixedUpdate() {
+        position2D = transform.position;
+        //position2D += velocity * speed * Time.deltaTime;
+        transform.position = position2D;
+
+        Debug.DrawLine(position2D, position2D + (velocity.normalized * _rayDistance));
+
+        RaycastHit2D hit2D = Physics2D.Raycast(position2D, velocity.normalized, _rayDistance);
+
+        if (hit2D.collider != null) {
+            //velocity = new Vector2(velocity.y, -velocity.x);
+            float adj = (hit2D.point + hit2D.normal).magnitude;
+            float hyp = (hit2D.point - velocity).magnitude;
+            float cosIsh = adj / hyp;
+            
+            
+
+            Debug.DrawLine(hit2D.point, hit2D.point + hit2D.normal, Color.cyan);
+            Debug.DrawLine(hit2D.point, hit2D.point - velocity.normalized, Color.magenta);
+            
+
+            //Debug.DrawLine(position2D, hit2D.point, Color.green);            
+            //float dot = Vector2.Dot(velocity, hit2D.normal);
+            //Debug.DrawLine(hit2D.point, hit2D.point + (hit2D.normal * dot), Color.red);
         }
     }
-    // Start is called before the first frame update
-    void Start() {
-        float meshesArea = 0;
-        for (int i = 0; i < _mesh.triangles.Length; i += 3) {
-            Vector3 firstVertice = _mesh.vertices[_mesh.triangles[i]];
-            Vector3 secondVertice = _mesh.vertices[_mesh.triangles[i + 1]];
-            Vector3 thirdVertice = _mesh.vertices[_mesh.triangles[i + 2]];
-
-
-
-
-            //Vector3 cross = Vector3.Cross(distance1, distance2);
-            //float verticecArea = cross.magnitude * 0.5f;
-            //meshesArea += verticecArea;
-
-        }
-        textCanvas.GetComponentInChildren<Text>().text = meshesArea.ToString();
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-
-    }
-
-
-
 }

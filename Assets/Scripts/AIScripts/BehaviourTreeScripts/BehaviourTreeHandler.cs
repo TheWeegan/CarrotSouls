@@ -12,7 +12,6 @@ public class BehaviourTreeHandler
     public IBehaviourTreeNode carrotGolemBehaviourTree;
 
     private AttackHandler _attackHandler = new AttackHandler();
-    private CarrotGolemController _carrotGolemController;
 
     public void CreateCarrotGolemTree(GameObject gameObject, GameObject targetObject) {
         BehaviourTreeBuilder behaviourTreeBuilder = new BehaviourTreeBuilder();
@@ -52,7 +51,7 @@ public class BehaviourTreeHandler
                                 }
                             })
                             .Do("PickAttack", t => {
-                                if(PickAttackAction(gameObject, targetObject)) {
+                                if(PickAttackAction(gameObject)) {
                                     return BehaviourTreeStatus.Success;
 
                                 } else {
@@ -108,10 +107,9 @@ public class BehaviourTreeHandler
 
     private bool TargetInRangeDecorator(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            Vector3 distance = _carrotGolemController.targetPosition - _carrotGolemController.transform.position;
+            Vector3 distance = carrotGolemBehaviour.CarrotGolemController.targetPosition - carrotGolemBehaviour.CarrotGolemController.transform.position;
             
-            if(distance.magnitude <= _carrotGolemController.attackRange) {
+            if(distance.magnitude <= carrotGolemBehaviour.CarrotGolemController.attackRange) {
                 return true;
 
             } else {
@@ -123,9 +121,7 @@ public class BehaviourTreeHandler
 
     private bool TargetIsPlayer(GameObject gameObject, GameObject targetObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-
-            if (_carrotGolemController.targetGameObject.GetInstanceID() == targetObject.GetInstanceID()) {
+            if (carrotGolemBehaviour.CarrotGolemController.targetGameObject.GetInstanceID() == targetObject.GetInstanceID()) {
                 return true;
 
             } else {
@@ -137,7 +133,7 @@ public class BehaviourTreeHandler
 
     private void UseAttackAction(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            switch (_carrotGolemController.currentAttack) {
+            switch (carrotGolemBehaviour.CarrotGolemController.currentAttack) {
                 case AttackMoves.GigaImpact:
                     _attackHandler.UseGigaImpact(gameObject);
                     break;
@@ -154,13 +150,12 @@ public class BehaviourTreeHandler
                     break;
             }
         }
-
     }
 
     private bool ReadyToAttack(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            if(_carrotGolemController.cooldownTimer <= 0) {
+            carrotGolemBehaviour.CarrotGolemController = carrotGolemBehaviour.CarrotGolemController;
+            if(carrotGolemBehaviour.CarrotGolemController.cooldownTimer <= 0) {
                 return true;
 
             } else {
@@ -170,119 +165,23 @@ public class BehaviourTreeHandler
         return false;
     }
 
-    private bool PickAttackAction(GameObject gameObject, GameObject targetObject) {
+    private bool PickAttackAction(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-
-            int attackChoice = Random.Range(0, 4);
-            switch (attackChoice) {
-                case 0: {
-                    if(_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotOne &&
-                        _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotOne) {
-                        ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotOne);
-                        return true;
-                    }
-                    break;
-                }
-                case 1: {
-                    if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotTwo &&
-                        _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotTwo) {
-                        ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotTwo);
-                        return true;
-                    }
-                    break;
-                }
-                case 2: {
-                    if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotThree &&
-                        _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotThree) {
-                        ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotThree);
-                            return true;
-                    }
-                    break;
-                }
-                case 3: { 
-                    if (_carrotGolemController.latestUsedAttackUsed != _carrotGolemController.attackSlotFour &&
-                        _carrotGolemController.secondLatestAttackUsed != _carrotGolemController.attackSlotFour) {
-                        ChangeAttack(gameObject, targetObject, _carrotGolemController.attackSlotFour);
-                            return true;
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
+            return carrotGolemBehaviour.PickAttack();
         }
         return false;
     }
 
-    private void ChangeAttack(GameObject gameObject, GameObject targetObject, AttackMoves newAttack) {
-        if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            _carrotGolemController.secondLatestAttackUsed = _carrotGolemController.latestUsedAttackUsed;
-            _carrotGolemController.latestUsedAttackUsed = newAttack;
-            _carrotGolemController.currentAttack = newAttack;
-            _carrotGolemController.attackTimer = _carrotGolemController.attackDuration;
-
-            switch (newAttack) {
-                case AttackMoves.GigaImpact:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.gigaImpactSound);
-                    _carrotGolemController.attackTimer = 5f;
-                    _carrotGolemController.targetPosition = targetObject.transform.position;
-                    break;
-                case AttackMoves.Earthquake:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.earthquakeSound);
-                    _carrotGolemController.targetPosition = _carrotGolemController.transform.position;
-                    break;
-                case AttackMoves.BodySlam:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.bodySlamSound);
-                    _carrotGolemController.targetPosition = targetObject.transform.position;
-                    float distance = (_carrotGolemController.targetPosition - _carrotGolemController.transform.position).magnitude;
-
-                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.transform.position);
-                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.transform.position + _carrotGolemController.transform.up * distance);
-                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.targetPosition + _carrotGolemController.transform.up * distance);                    
-                    _carrotGolemController.lerpPositions.Add(_carrotGolemController.targetPosition);
-                    
-
-                    _carrotGolemController.lerpLengthSegments.Add(_carrotGolemController.lerpPositions[0]);
-                    float t = 0.1f;
-                    for (int i = 0; i < 8; ++i) {
-                        Vector3 _a = Vector3.Lerp(_carrotGolemController.lerpPositions[0], _carrotGolemController.lerpPositions[1], t);
-                        Vector3 _b = Vector3.Lerp(_carrotGolemController.lerpPositions[1], _carrotGolemController.lerpPositions[2], t);
-                        Vector3 _c = Vector3.Lerp(_carrotGolemController.lerpPositions[2], _carrotGolemController.lerpPositions[3], t);
-                        Vector3 _d = Vector3.Lerp(_a, _b, t);
-                        Vector3 _e = Vector3.Lerp(_b, _c, t);
-                        _carrotGolemController.lerpLengthSegments.Add(Vector3.Lerp(_d, _e, t));
-                        t += 0.1f;
-                    }
-                    _carrotGolemController.lerpLengthSegments.Add(_carrotGolemController.lerpPositions[3]);
-
-                    break;
-                case AttackMoves.WoodHamemr:
-                    AudioOverlord.GetInstance.PlayerOneShot(gameObject, _carrotGolemController.woodHammerSound);
-                    _carrotGolemController.targetPosition = targetObject.transform.position;
-                    break;
-                default:
-                    break;
-            }
-            carrotGolemBehaviour.UpdateControllerValues(_carrotGolemController);
-        }
-    }
-
     private void SetTargetToPlayer(GameObject gameObject, GameObject targetObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            _carrotGolemController.targetGameObject = targetObject;
-            _carrotGolemController.targetPosition = targetObject.transform.position;
-            carrotGolemBehaviour.UpdateControllerValues(_carrotGolemController);
+            carrotGolemBehaviour.SetTargetPlayer();
         }
     }
 
     private void WalkTowardsPlayer(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CarrotGolemBehaviour carrotGolemBehaviour)) {
-            _carrotGolemController = carrotGolemBehaviour.CarrotGolemController;
-            _carrotGolemController.targetPosition = _carrotGolemController.targetGameObject.transform.position;
-            carrotGolemBehaviour.UpdateMovementBehaviour(true, true, ref _carrotGolemController);
+            carrotGolemBehaviour.SetTargetPlayer();
+            carrotGolemBehaviour.UpdateMovementBehaviour(true, true);
             carrotGolemBehaviour.IgnoreCollisionWithTarget();
         }
 

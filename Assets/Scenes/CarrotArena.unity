@@ -12038,11 +12038,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1275958185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 240b2b6f92c8cf44f80a7b878f557e43, type: 3}
+  m_Script: {fileID: 11500000, guid: 65c5f34a710f6c64793aaa93dc5a415a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthText: {fileID: 333303577}
-  _eventSystem: {fileID: 0}
+  _eventSystem: {fileID: 317424543}
 --- !u!114 &1275958189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28424,18 +28424,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7540182d172b74ba240a2b9f2e5d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angularSlowRadius: {x: 0, y: 270, z: 0}
-  maxAngularAcceleration: {x: 0, y: 15, z: 0}
-  maxRotation: {x: 0, y: 360, z: 0}
+  angularSlowRadius: {x: 0, y: 60, z: 0}
+  maxAngularAcceleration: {x: 0, y: 30, z: 0}
+  maxRotation: {x: 0, y: 90, z: 0}
   attackRange: 20
   attackCooldown: 2
   attackDuration: 3
   jumpHeight: 5
   maxAcceleration: 5
-  maxSpeed: 10
+  maxSpeed: 5
   maxPrediction: 5
   timeToTarget: 1
-  targetRadius: 5
+  targetRadius: 1
   attackSlotOne: 4
   attackSlotTwo: 5
   attackSlotThree: 6

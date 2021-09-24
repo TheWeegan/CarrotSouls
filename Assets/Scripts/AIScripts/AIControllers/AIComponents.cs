@@ -9,8 +9,11 @@ public struct SteeringOutput {
 };
 
 public struct CarrotGolemController {
-    public uint id;
+    public int id;
+    public Transform transform;
+    public GameObject targetGameObject;
 
+    #region Variables for steering behaviour
     public Vector3 velocity;
     public Vector3 direction;
 
@@ -20,12 +23,6 @@ public struct CarrotGolemController {
     public Vector3 maxAngularAcceleration;
     public Vector3 maxRotation;
     public Vector3 targetPosition;
-    
-    public List<Vector3> lerpPositions;
-    public List<Vector3> lerpLengthSegments;
-
-    public Transform transform;
-    public GameObject targetGameObject;
 
     public float maxAcceleration;
     public float maxSpeed;
@@ -33,23 +30,31 @@ public struct CarrotGolemController {
     public float timeToTarget;
     public float targetRadius;
     public float characterWidth;
+    public float characterHeight;
 
     public float currentSpeed;
     public float distance;
     public float currentPrediction;
 
+    public BehaviourAndWeight faceBehaviourAndWeight;
+    public BehaviourAndWeight pursueBehaviourAndWeight;
+    #endregion
+
+    #region Variables for attacking
     public float attackRange;
+    public float jumpHeight;
+
     public float attackCooldown;
-    public float attackDuration;
+    public float currentAttackDuration;
     public float attackTimer;
     public float cooldownTimer;
-    public float jumpHeight;
     public float gravity;
 
     public bool hasHitOnce;
+    public bool hittingWithWoodHammer;
 
-    public BehaviourAndWeight faceBehaviourAndWeight;
-    public BehaviourAndWeight pursueBehaviourAndWeight;
+    public List<Vector3> lerpPositions;
+    public List<Vector3> lerpLengthSegments;
 
     public AttackMoves currentAttack;
     public AttackMoves latestUsedAttackUsed;
@@ -69,4 +74,5 @@ public struct CarrotGolemController {
     public ParticleSystem earthquakeParticleSystem;
     public ParticleSystem bodySlamParticleSystem;
     public ParticleSystem woodHammerParticleSystem;
+    #endregion
 }
