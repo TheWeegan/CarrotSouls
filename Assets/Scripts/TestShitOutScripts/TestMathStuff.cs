@@ -7,18 +7,64 @@ public class TestMathStuff : MonoBehaviour {
     public Mesh _mesh;
     public Canvas textCanvas;
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawMesh(_mesh);
+    public int maxBounceCount = 32;
+
+    void OnDrawGizmos() {
+        // ray origin
+        // ray direction
+        Ray ray = new Ray(transform.position, transform.right);
+
+        for (int i = 0; i < maxBounceCount; i++) {
+            if (Physics.Raycast(ray, out RaycastHit hit)) {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(ray.origin, hit.point);
+                // Gizmos.color = Color.cyan;
+                // Gizmos.DrawRay( hit.point, hit.normal );
+                // Gizmos.color = Color.white;
+                Vector3 reflected = Reflect(ray.direction, hit.normal);
+                // Gizmos.DrawRay( hit.point, reflected );
+
+                // move ray to the new bounce location + direction
+                ray.origin = hit.point + hit.normal * 0.001f; // tiny offset margin to avoid starting inside colliders
+                ray.direction = reflected;
+            } else {
+                break; // no more bounces
+            }
+        }
     }
+
+
+
+
     // Start is called before the first frame update
     void Start() {
     }
 
     // Update is called once per frame
     void Update() {
-        CalculateMeshArea();
 
+
+    }
+
+    void CreateLaser() {
+        // ray origin
+        // ray direction
+        Ray ray = new Ray(transform.position, transform.right);
+
+        for (int i = 0; i < maxBounceCount; i++) {
+            if (Physics.Raycast(ray, out RaycastHit hit)) {
+                Vector3 reflected = Reflect(ray.direction, hit.normal);
+
+                // move ray to the new bounce location + direction
+                ray.origin = hit.point + hit.normal * 0.001f; // tiny offset margin to avoid starting inside colliders
+                ray.direction = reflected;
+            } else {
+                break; // no more bounces
+            }
+        }
+    }
+    Vector3 Reflect(Vector3 inDir, Vector3 normal) {
+        return inDir - 2 * normal * Vector3.Dot(normal, inDir);
     }
 
     void CalculateMeshArea() {
@@ -31,8 +77,13 @@ public class TestMathStuff : MonoBehaviour {
             Vector3 distance = thirdVertice - secondVertice;
             Vector3 distance2 = firstVertice - thirdVertice;
             Vector3 _cross = Vector3.Cross(distance, distance2);
-            meshesArea += _cross.magnitude * 0.5f;
+
+            float verticeArea = _cross.magnitude;
+            
+            meshesArea += verticeArea * 0.5f;
+            
         }
+
         textCanvas.GetComponentInChildren<Text>().text = meshesArea.ToString() + "m^2";
     }
 

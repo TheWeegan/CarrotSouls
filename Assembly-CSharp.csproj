@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\Overlords\DebugLineOverlord.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\IBehaviourTreeNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\ParallelNode.cs" />
+    <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\TestShitOutScripts\TestMathStuff.cs" />
     <Compile Include="Assets\Scripts\AIScripts\AIControllers\CarrotGolemBehaviour.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\NodeScripts\InverterNode.cs" />
     <Compile Include="Assets\Scripts\AIScripts\BehaviourTreeScripts\BehaviourTreeStatus.cs" />
     <Compile Include="Assets\Scripts\AIScripts\SteeringBehaviours\AlignBehaviour.cs" />
-    <Compile Include="Assets\Scripts\PlayerScripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\TestShitOutScripts\TestTurretStuff.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
