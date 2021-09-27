@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class TestTurretStuff : MonoBehaviour
 {
-    [SerializeField] GameObject _gameObject;
+    [SerializeField] List<GameObject> _gameObjects;
+    [SerializeField] GameObject _player;
 
-    public Vector3 orientation = new Vector3();
-    public Vector3 rotation = new Vector3();
-
+    public float _gunDistance = 10.0f;
+    public float _barrelLength = 10.0f;
+    public float _gunHeight = 10.0f;
 
     private void OnDrawGizmos() {
         
@@ -23,18 +24,26 @@ public class TestTurretStuff : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        Ray ray = new Ray(_gameObject.transform.position, -_gameObject.transform.up);
-        Debug.DrawRay(_gameObject.transform.position, -_gameObject.transform.up, Color.green);
+        foreach(GameObject turret in _gameObjects) {
+            Ray ray = new Ray(turret.transform.position, -turret.transform.up);
+            Debug.DrawRay(turret.transform.position, -turret.transform.up, Color.cyan);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 1.0f)) {
-            _gameObject.transform.up = hit.normal;
-            Debug.DrawRay(hit.point, hit.normal, Color.red);
+            if (Physics.Raycast(ray, out RaycastHit hit, 1.0f)) {
+                turret.transform.up = hit.normal;
+                Debug.DrawRay(hit.point, hit.normal, Color.red);
+            }
 
+            Debug.DrawRay(turret.transform.position, turret.transform.right, Color.red);
+            Debug.DrawRay(turret.transform.position, turret.transform.up, Color.green);
+            Debug.DrawRay(turret.transform.position, turret.transform.forward, Color.blue);
+        }
+    }
+
+    void LookAtPlayer(GameObject turret) {
+        Vector3 direction = _player.transform.position - turret.transform.position;
+        if(direction.magnitude <= _gunDistance) {
 
         }
 
-
     }
-
-
 }
