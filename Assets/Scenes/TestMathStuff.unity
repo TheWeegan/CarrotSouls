@@ -2141,8 +2141,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118614714}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0076935105, y: 0.001160274, z: -0.0013004437, w: 0.9999689}
+  m_LocalPosition: {x: -0.009384632, y: -0.01225853, z: -0.06645703}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1311633104}
@@ -2150,7 +2150,7 @@ Transform:
   - {fileID: 2041070805}
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.882, y: 0.132, z: -0.148}
 --- !u!114 &2118614716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2168,6 +2168,6 @@ MonoBehaviour:
   - {fileID: 702989402}
   - {fileID: 2041070801}
   _player: {fileID: 1085007283}
-  _gunHeight: 1.5
-  _barrelLength: 3
-  _gunSeparation: 0.15
+  _gunHeight: 0.87
+  _barrelLength: 1.98
+  _gunSeparation: -0.21

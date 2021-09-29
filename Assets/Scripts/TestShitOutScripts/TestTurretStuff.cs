@@ -21,45 +21,35 @@ public class TestTurretStuff : MonoBehaviour
         foreach (GameObject turret in _gameObjects) {
             _corners = new Vector3[] {
                 // bottom 4 positions:
-	            turret.transform.right + turret.transform.forward,
-                -turret.transform.right + turret.transform.forward,
-                -turret.transform.right + -turret.transform.forward,
-                turret.transform.right + -turret.transform.forward,
+	            turret.transform.position + turret.transform.right + turret.transform.forward,
+                turret.transform.position + -turret.transform.right + turret.transform.forward,
+                turret.transform.position + -turret.transform.right + -turret.transform.forward,
+                turret.transform.position + turret.transform.right + -turret.transform.forward,
 	            // top 4 positions:
 	            turret.transform.position + turret.transform.right + (turret.transform.up * 2) + turret.transform.forward,
                 turret.transform.position + -turret.transform.right + (turret.transform.up * 2) + turret.transform.forward,
                 turret.transform.position + -turret.transform.right + (turret.transform.up * 2) + -turret.transform.forward,
                 turret.transform.position + turret.transform.right + (turret.transform.up * 2) + -turret.transform.forward
             };
-
+            
             Matrix4x4 bottonCorners = new Matrix4x4(_corners[0], _corners[1], _corners[2], _corners[3]);
+            Matrix4x4 topCorners = new Matrix4x4(_corners[4], _corners[5], _corners[6], _corners[7]);
+            
+            Gizmos.DrawLine(bottonCorners.GetColumn(0), bottonCorners.GetColumn(1));
+            Gizmos.DrawLine(bottonCorners.GetColumn(1), bottonCorners.GetColumn(2));
+            Gizmos.DrawLine(bottonCorners.GetColumn(2), bottonCorners.GetColumn(3));
+            Gizmos.DrawLine(bottonCorners.GetColumn(3), bottonCorners.GetColumn(0));
 
-            Vector3 matrixPos1 = new Vector3(bottonCorners.m00, bottonCorners.m01, bottonCorners.m02);
-            Vector3 matrixPos2 = new Vector3(bottonCorners.m10, bottonCorners.m11, bottonCorners.m12);
+            Gizmos.DrawLine(bottonCorners.GetColumn(0), topCorners.GetColumn(0));
+            Gizmos.DrawLine(bottonCorners.GetColumn(1), topCorners.GetColumn(1));
+            Gizmos.DrawLine(bottonCorners.GetColumn(2), topCorners.GetColumn(2));
+            Gizmos.DrawLine(bottonCorners.GetColumn(3), topCorners.GetColumn(3));
 
-
-            Gizmos.DrawLine(matrixPos1 + turret.transform.position, matrixPos2 + turret.transform.position);
-
-            Gizmos.DrawLine(_corners[0] + turret.transform.position, _corners[1] + turret.transform.position);
-
-
-            break;
-            Gizmos.DrawLine(_corners[0], _corners[1]);
-            Gizmos.DrawLine(_corners[1], _corners[2]);
-            Gizmos.DrawLine(_corners[2], _corners[3]);
-            Gizmos.DrawLine(_corners[3], _corners[0]);
-
-            Gizmos.DrawLine(_corners[0], _corners[4]);
-            Gizmos.DrawLine(_corners[1], _corners[5]);
-            Gizmos.DrawLine(_corners[2], _corners[6]);
-            Gizmos.DrawLine(_corners[3], _corners[7]);
-
-            Gizmos.DrawLine(_corners[4], _corners[5]);
-            Gizmos.DrawLine(_corners[5], _corners[6]);
-            Gizmos.DrawLine(_corners[6], _corners[7]);
-            Gizmos.DrawLine(_corners[7], _corners[4]);
-
-
+            Gizmos.DrawLine(topCorners.GetColumn(0), topCorners.GetColumn(1));
+            Gizmos.DrawLine(topCorners.GetColumn(1), topCorners.GetColumn(2));
+            Gizmos.DrawLine(topCorners.GetColumn(2), topCorners.GetColumn(3));
+            Gizmos.DrawLine(topCorners.GetColumn(3), topCorners.GetColumn(0));
+            //Gizmos.DrawLine(_corners[0] + turret.transform.position, _corners[1] + turret.transform.position);
             _gun1 = turret.transform.position + turret.transform.forward * _barrelLength;
             _gun1.y = turret.transform.position.y + turret.transform.up.y * _gunHeight;
 
@@ -73,8 +63,6 @@ public class TestTurretStuff : MonoBehaviour
 
             Gizmos.DrawLine(turret.transform.position + barrelOffset, _gun1);
             Gizmos.DrawLine(turret.transform.position - barrelOffset, _gun2);
-            
-            break;
         }
     }
 
