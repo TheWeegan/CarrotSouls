@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Freya;
+
 public class TestTurretStuff : MonoBehaviour
 {
     [SerializeField] List<GameObject> _gameObjects;
@@ -17,7 +19,6 @@ public class TestTurretStuff : MonoBehaviour
     Vector3[] _corners;
 
     private void OnDrawGizmos() {
-
         foreach (GameObject turret in _gameObjects) {
             _corners = new Vector3[] {
                 // bottom 4 positions:
@@ -60,7 +61,7 @@ public class TestTurretStuff : MonoBehaviour
             _gun2.x -= _gunSeparation * 0.5f;
 
             Vector3 barrelOffset = new Vector3(_gunSeparation * 0.5f, 0f, 0f);
-
+            
             Gizmos.DrawLine(turret.transform.position + barrelOffset, _gun1);
             Gizmos.DrawLine(turret.transform.position - barrelOffset, _gun2);
         }
